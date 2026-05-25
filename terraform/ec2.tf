@@ -12,3 +12,17 @@ resource "aws_instance" "web" {
     Name = "flask-demo-server"
   }
 }
+
+resource "aws_instance" "web_2" {
+  ami                         = "ami-0a628e1e89aaedf80"
+  instance_type               = var.instance_type
+  subnet_id                   = aws_subnet.public_2.id
+  vpc_security_group_ids      = [aws_security_group.web.id]
+  associate_public_ip_address = true
+  user_data                   = file("${path.module}/userdata.sh")
+  user_data_replace_on_change = true
+
+  tags = {
+    Name = "flask-demo-server-2"
+  }
+}
